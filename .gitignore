@@ -1,0 +1,36 @@
+# Qt-specific files
+*.user
+*.pro.user
+*.qbs.user
+*.moc
+*.qmlc
+#*.qrc
+
+# Compiled object files
+*.o
+*.obj
+
+# Compiled dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Generated files
+#Makefile
+#CMakeLists.txt
+build/
+cmake-build-debug/
+
+
+# IDE-specific files
+.vscode/
+.idea/
+*.cbp
+*.layout
+*.depend
+*.aps
+*.ncb
+*.suo
+*.sdf
+*.opensdf
+*.sln.docstates
