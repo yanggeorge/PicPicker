@@ -6,5 +6,9 @@
         <file>icons/open.png</file>
         <file>icons/paste.png</file>
         <file>icons/save.png</file>
+        <file>icons/pics-folder.png</file>
+        <file>icons/delete-folder.png</file>
+        <file>icons/delete.png</file>
+        <file>icons/undo.png</file>
     </qresource>
 </RCC>

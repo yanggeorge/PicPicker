@@ -25,19 +25,19 @@ MainWindow::MainWindow(QWidget *parent)
     addToolBar(toolbar);
 
     // Create the "Source Dir" button
-    QAction *sourceDirButton = new QAction(QIcon(":/icons/open.png"), tr("Source"), this);
+    QAction *sourceDirButton = new QAction(QIcon(":/icons/pics-folder"), tr("Pics Folder"), this);
     toolbar->addAction(sourceDirButton);
 
     // Create the "Tmp Dir" button
-    QAction *tmpDirButton = new QAction(QIcon(":/icons/save.png"), tr("Tmp"), this);
+    QAction *tmpDirButton = new QAction(QIcon(":/icons/delete-folder.png"), tr("Trash Folder"), this);
     toolbar->addAction(tmpDirButton);
 
     // Create the "Del" button
-    QAction *delButton = new QAction(QIcon(":/icons/cut.png"), tr("Del"), this);
+    QAction *delButton = new QAction(QIcon(":/icons/delete.png"), tr("Del"), this);
     toolbar->addAction(delButton);
 
     // Create the "Re-Del" button
-    QAction *reDelButton = new QAction(QIcon(":/icons/paste.png"), tr("ReDel"), this);
+    QAction *reDelButton = new QAction(QIcon(":/icons/undo.png"), tr("Undo"), this);
     toolbar->addAction(reDelButton);
 
     // Connect the button signals to slots
