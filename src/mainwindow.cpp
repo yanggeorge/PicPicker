@@ -6,6 +6,8 @@
 #include <QFileDialog>
 #include <QIcon>
 #include <QtWidgets>
+#include <QDebug>
+#include <QStringList>
 
 QT_BEGIN_NAMESPACE
 
@@ -14,6 +16,7 @@ class QStatusBar;
 class QToolBar;
 class QMenu;
 class QAction;
+class QMessageBox;
 
 QT_END_NAMESPACE
 
@@ -21,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent)
 {
     // Create the toolbar
-    QToolBar *toolbar = new QToolBar(this);
+    toolbar = new QToolBar(this);
     addToolBar(toolbar);
 
     // Create the "Source Dir" button
@@ -29,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     toolbar->addAction(sourceDirButton);
 
     // Create the "Tmp Dir" button
-    QAction *tmpDirButton = new QAction(QIcon(":/icons/delete-folder.png"), tr("Trash Folder"), this);
+    QAction *tmpDirButton = new QAction(QIcon(":/icons/delete-folder.png"), tr("Tmp Folder"), this);
     toolbar->addAction(tmpDirButton);
 
     // Create the "Del" button
@@ -41,23 +44,49 @@ MainWindow::MainWindow(QWidget *parent)
     toolbar->addAction(reDelButton);
 
     // Connect the button signals to slots
-    connect(sourceDirButton, &QAction::triggered, this, &MainWindow::onSourceDirClicked);
-    connect(tmpDirButton, &QAction::triggered, this, &MainWindow::onTmpDirClicked);
+    connect(sourceDirButton, &QAction::triggered, this, &MainWindow::onPicsFolderClicked);
+    connect(tmpDirButton, &QAction::triggered, this, &MainWindow::onTmpFolderClicked);
     connect(delButton, &QAction::triggered, this, &MainWindow::onDelClicked);
-    connect(reDelButton, &QAction::triggered, this, &MainWindow::onReDelClicked);
+    connect(reDelButton, &QAction::triggered, this, &MainWindow::onUndoClicked);
+
+    imageLabel = new QLabel(this);
+    imageLabel->setFixedHeight(fixedHeight);
+    imageLabel->setFixedWidth(fixedWidth);
+    this->setCentralWidget(imageLabel);
+
+    statusBar = new QStatusBar(this);
+    this->setStatusBar(statusBar);
+    statusBar->showMessage(tr("Ready"));
 }
 
-void MainWindow::onSourceDirClicked()
+void MainWindow::onPicsFolderClicked()
 {
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Choose Source Directory"), QDir::homePath());
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Choose Pictures Folder"), QDir::homePath());
     if (!dir.isEmpty()) {
         // Do something with the selected directory
+        qInfo() << dir;
+        picsFolder  = dir ;
+        const QStringList &files = QDir(dir).entryList(QDir::Filter::Files,
+                                                       QDir::SortFlag::Name | QDir::SortFlag::Time);
+        QRegExp regexp("\\.(png|jpg)$");
+        const QStringList &pics = files.filter(regexp);
+        if (pics.length() < 1) {
+            QMessageBox::information(nullptr, "Information", tr("没有找到图片"));
+            return;
+        }
+        qInfo() << pics[0];
+        QImage image(dir + QDir::separator() + pics[0]);
+        image.scaled(fixedWidth, fixedHeight);
+        imageLabel->setPixmap(QPixmap::fromImage(image.scaled(fixedWidth, fixedHeight, Qt::KeepAspectRatio)));
+//        foreach(const QString& pic, pics) {
+//            qInfo() << pic ;
+//        }
     }
 }
 
-void MainWindow::onTmpDirClicked()
+void MainWindow::onTmpFolderClicked()
 {
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Choose Tmp Directory"), QDir::homePath());
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Choose Tmp Folder"), QDir::homePath());
     if (!dir.isEmpty()) {
         // Do something with the selected directory
     }
@@ -68,7 +97,7 @@ void MainWindow::onDelClicked()
     // Implement the functionality for the "Del" button
 }
 
-void MainWindow::onReDelClicked()
+void MainWindow::onUndoClicked()
 {
     // Implement the functionality for the "Re-Del" button
 }

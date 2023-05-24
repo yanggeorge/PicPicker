@@ -6,6 +6,7 @@
 #define PICKPIC_MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QLabel>
 
 class MainWindow : public QMainWindow
 {
@@ -17,11 +18,21 @@ public:
 
 private slots:
 
-    void onSourceDirClicked();
-    void onTmpDirClicked();
+    void onPicsFolderClicked();
+    void onTmpFolderClicked();
     void onDelClicked();
-    void onReDelClicked();
+    void onUndoClicked();
 
+private:
+    QString picsFolder = QString{};
+    QString tmpFolder = QString{};
+
+    QToolBar* toolbar;
+    QStatusBar* statusBar;
+    QLabel* imageLabel;
+
+    const int fixedHeight = 600;
+    const int fixedWidth = 800;
 };
 
 
