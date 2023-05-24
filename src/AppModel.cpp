@@ -55,7 +55,9 @@ QString AppModel::debugInfo() const {
         return "pics hasn't inited";
     }
 
-    return QString("current pic [%1/%2] %3").arg(index+1)
+    return QString("%1 [%2/%3] %4")
+            .arg(picsFolder)
+            .arg(index+1)
             .arg(pics.length())
             .arg(currPic());
 }

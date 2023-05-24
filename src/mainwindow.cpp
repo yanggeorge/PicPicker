@@ -51,10 +51,12 @@ MainWindow::MainWindow(QWidget *parent)
     // Create the "Back" button
     QAction *backButton = new QAction(QIcon(":/icons/back.png"), tr("Previous Pic"), this);
     toolbar->addAction(backButton);
+    backButton->setShortcut(QKeySequence(Qt::Key_Left));
 
     // Create the "Forward" button
     QAction *forwardButton = new QAction(QIcon(":/icons/forward.png"), tr("Next Pic"), this);
     toolbar->addAction(forwardButton);
+    forwardButton->setShortcut(QKeySequence(Qt::Key_Right));
 
 
     // Connect the button signals to slots
@@ -72,12 +74,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     statusBar = new QStatusBar(this);
     this->setStatusBar(statusBar);
-    statusBar->showMessage(tr("Ready"));
-    qInfo() << appModel->debugInfo();
+    statusBar->showMessage(appModel->debugInfo());
 }
 
 void MainWindow::onPicsFolderClicked() {
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Choose Pictures Folder"), QDir::homePath());
+    auto openDir = appModel->getPicsFolder() == nullptr ? QDir::homePath() : appModel->getPicsFolder();
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Choose Pictures Folder"), openDir);
     if (dir.isEmpty()) {
         return;
     }
@@ -97,7 +99,7 @@ void MainWindow::onPicsFolderClicked() {
     qInfo() << QString("there are %1 pics.").arg(pics.length());
     appModel->initPics(pics);
     showImage(appModel->currPic());
-    qInfo() << appModel->debugInfo();
+    statusBar->showMessage(appModel->debugInfo());
 }
 
 void MainWindow::showImage(const QString &pic) {
@@ -127,8 +129,8 @@ void MainWindow::onBackClicked() {
     if (pic == nullptr) {
         return;
     }
-    qInfo() << appModel->debugInfo();
     showImage(pic);
+    statusBar->showMessage(appModel->debugInfo());
 }
 
 void MainWindow::onForwardClicked() {
@@ -137,6 +139,6 @@ void MainWindow::onForwardClicked() {
     if (pic == nullptr) {
         return;
     }
-    qInfo() << appModel->debugInfo();
     showImage(pic);
+    statusBar->showMessage(appModel->debugInfo());
 }
