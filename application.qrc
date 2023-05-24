@@ -10,5 +10,7 @@
         <file>icons/delete-folder.png</file>
         <file>icons/delete.png</file>
         <file>icons/undo.png</file>
+        <file>icons/back.png</file>
+        <file>icons/forward.png</file>
     </qresource>
 </RCC>

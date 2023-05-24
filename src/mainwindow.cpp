@@ -43,11 +43,22 @@ MainWindow::MainWindow(QWidget *parent)
     QAction *reDelButton = new QAction(QIcon(":/icons/undo.png"), tr("Undo"), this);
     toolbar->addAction(reDelButton);
 
+    // Create the "Back" button
+    QAction *backButton = new QAction(QIcon(":/icons/back.png"), tr("Previous Pic"), this);
+    toolbar->addAction(backButton);
+
+    // Create the "Forward" button
+    QAction *forwardButton = new QAction(QIcon(":/icons/forward.png"), tr("Next Pic"), this);
+    toolbar->addAction(forwardButton);
+
+
     // Connect the button signals to slots
     connect(sourceDirButton, &QAction::triggered, this, &MainWindow::onPicsFolderClicked);
     connect(tmpDirButton, &QAction::triggered, this, &MainWindow::onTmpFolderClicked);
     connect(delButton, &QAction::triggered, this, &MainWindow::onDelClicked);
     connect(reDelButton, &QAction::triggered, this, &MainWindow::onUndoClicked);
+    connect(backButton, &QAction::triggered, this, &MainWindow::onBackClicked);
+    connect(forwardButton, &QAction::triggered, this, &MainWindow::onForwardClicked);
 
     imageLabel = new QLabel(this);
     imageLabel->setFixedHeight(fixedHeight);
@@ -100,4 +111,12 @@ void MainWindow::onDelClicked()
 void MainWindow::onUndoClicked()
 {
     // Implement the functionality for the "Re-Del" button
+}
+
+void MainWindow::onBackClicked() {
+    // Implement the functionality for the "Back" button
+}
+
+void MainWindow::onForwardClicked() {
+    // Implement the functionality for the "Forward" button
 }

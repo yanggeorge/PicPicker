@@ -22,6 +22,8 @@ private slots:
     void onTmpFolderClicked();
     void onDelClicked();
     void onUndoClicked();
+    void onBackClicked();
+    void onForwardClicked();
 
 private:
     QString picsFolder = QString{};
