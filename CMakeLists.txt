@@ -15,7 +15,7 @@ find_package(Qt5 COMPONENTS
 
 QT5_ADD_RESOURCES(MyResources application.qrc)
 
-add_executable(pickpic src/main.cpp src/mainwindow.cpp src/mainwindow.h ${MyResources})
+add_executable(pickpic src/main.cpp src/mainwindow.cpp src/mainwindow.h ${MyResources} src/AppModel.cpp src/AppModel.h)
 target_link_libraries(pickpic
         Qt5::Core
         Qt5::Gui

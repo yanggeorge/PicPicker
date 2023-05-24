@@ -12,17 +12,22 @@
 QT_BEGIN_NAMESPACE
 
 class QMenuBar;
+
 class QStatusBar;
+
 class QToolBar;
+
 class QMenu;
+
 class QAction;
+
 class QMessageBox;
 
 QT_END_NAMESPACE
 
 MainWindow::MainWindow(QWidget *parent)
-        : QMainWindow(parent)
-{
+        : QMainWindow(parent) {
+    appModel = new AppModel();
     // Create the toolbar
     toolbar = new QToolBar(this);
     addToolBar(toolbar);
@@ -61,8 +66,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(forwardButton, &QAction::triggered, this, &MainWindow::onForwardClicked);
 
     imageLabel = new QLabel(this);
-    imageLabel->setFixedHeight(fixedHeight);
-    imageLabel->setFixedWidth(fixedWidth);
+    imageLabel->setFixedHeight(AppModel::Fixed_Height);
+    imageLabel->setFixedWidth(AppModel::Fixed_Width);
     this->setCentralWidget(imageLabel);
 
     statusBar = new QStatusBar(this);
@@ -70,46 +75,43 @@ MainWindow::MainWindow(QWidget *parent)
     statusBar->showMessage(tr("Ready"));
 }
 
-void MainWindow::onPicsFolderClicked()
-{
+void MainWindow::onPicsFolderClicked() {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Choose Pictures Folder"), QDir::homePath());
     if (!dir.isEmpty()) {
         // Do something with the selected directory
         qInfo() << dir;
-        picsFolder  = dir ;
-        const QStringList &files = QDir(dir).entryList(QDir::Filter::Files,
+        appModel->setPicsFolder(dir);
+        const QStringList &files = QDir(appModel->getPicsFolder()).entryList(QDir::Filter::Files,
                                                        QDir::SortFlag::Name | QDir::SortFlag::Time);
         QRegExp regexp("\\.(png|jpg)$");
         const QStringList &pics = files.filter(regexp);
         if (pics.length() < 1) {
+            //TODO : 这里Information没有显示
             QMessageBox::information(nullptr, "Information", tr("没有找到图片"));
             return;
         }
-        qInfo() << pics[0];
-        QImage image(dir + QDir::separator() + pics[0]);
-        image.scaled(fixedWidth, fixedHeight);
-        imageLabel->setPixmap(QPixmap::fromImage(image.scaled(fixedWidth, fixedHeight, Qt::KeepAspectRatio)));
-//        foreach(const QString& pic, pics) {
-//            qInfo() << pic ;
-//        }
+        qInfo() << QString("there are %1 pics.").arg(pics.length());
+        appModel->setPics(pics);
+
+        QImage image(appModel->getPicsFolder() + QDir::separator() + appModel->currPic());
+        QImage scaled = image.scaled(AppModel::Fixed_Width, AppModel::Fixed_Height, Qt::KeepAspectRatio);
+        imageLabel->setPixmap(QPixmap::fromImage(scaled));
+//
     }
 }
 
-void MainWindow::onTmpFolderClicked()
-{
+void MainWindow::onTmpFolderClicked() {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Choose Tmp Folder"), QDir::homePath());
     if (!dir.isEmpty()) {
         // Do something with the selected directory
     }
 }
 
-void MainWindow::onDelClicked()
-{
+void MainWindow::onDelClicked() {
     // Implement the functionality for the "Del" button
 }
 
-void MainWindow::onUndoClicked()
-{
+void MainWindow::onUndoClicked() {
     // Implement the functionality for the "Re-Del" button
 }
 

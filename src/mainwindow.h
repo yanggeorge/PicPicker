@@ -7,6 +7,7 @@
 
 #include <QMainWindow>
 #include <QLabel>
+#include "AppModel.h"
 
 class MainWindow : public QMainWindow
 {
@@ -26,15 +27,11 @@ private slots:
     void onForwardClicked();
 
 private:
-    QString picsFolder = QString{};
-    QString tmpFolder = QString{};
+    AppModel* appModel;
 
     QToolBar* toolbar;
     QStatusBar* statusBar;
     QLabel* imageLabel;
-
-    const int fixedHeight = 600;
-    const int fixedWidth = 800;
 };
 
 
