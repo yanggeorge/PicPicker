@@ -27,6 +27,8 @@ private slots:
     void onForwardClicked();
 
 private:
+    void showImage(const QString& pic);
+
     AppModel* appModel;
 
     QToolBar* toolbar;

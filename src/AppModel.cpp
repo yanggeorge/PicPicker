@@ -14,8 +14,9 @@ void AppModel::setPicsFolder(const QString &dir) {
     this->picsFolder = dir;
 }
 
-void AppModel::setPics(const QStringList &filenames) {
+void AppModel::initPics(const QStringList &filenames) {
     this->pics = filenames;
+    this->index = 0;
 }
 
 QStringList AppModel::getPics() {
@@ -26,24 +27,37 @@ int AppModel::getIndex() const {
     return this->index;
 }
 
-QString AppModel::currPic() {
-    return  pics[index];
+QString AppModel::currPic() const {
+    if (pics.length() == 0) return nullptr;
+    return pics[index];
 }
 
 QString AppModel::nextPic() {
+    if (pics.length() == 0) return nullptr;
     if (index + 1 == pics.length()) {
         return nullptr;
     }
     index += 1;
-    return  pics[index];
+    return pics[index];
 }
 
 QString AppModel::prevPic() {
-    if (index - 1 == 0 ) {
+    if (pics.length() == 0) return nullptr;
+    if (index == 0) {
         return nullptr;
     }
     index -= 1;
     return pics[index];
+}
+
+QString AppModel::debugInfo() const {
+    if(pics.length() == 0) {
+        return "pics hasn't inited";
+    }
+
+    return QString("current pic [%1/%2] %3").arg(index+1)
+            .arg(pics.length())
+            .arg(currPic());
 }
 
 

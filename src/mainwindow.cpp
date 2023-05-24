@@ -73,31 +73,37 @@ MainWindow::MainWindow(QWidget *parent)
     statusBar = new QStatusBar(this);
     this->setStatusBar(statusBar);
     statusBar->showMessage(tr("Ready"));
+    qInfo() << appModel->debugInfo();
 }
 
 void MainWindow::onPicsFolderClicked() {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Choose Pictures Folder"), QDir::homePath());
-    if (!dir.isEmpty()) {
-        // Do something with the selected directory
-        qInfo() << dir;
-        appModel->setPicsFolder(dir);
-        const QStringList &files = QDir(appModel->getPicsFolder()).entryList(QDir::Filter::Files,
-                                                       QDir::SortFlag::Name | QDir::SortFlag::Time);
-        QRegExp regexp("\\.(png|jpg)$");
-        const QStringList &pics = files.filter(regexp);
-        if (pics.length() < 1) {
-            //TODO : 这里Information没有显示
-            QMessageBox::information(nullptr, "Information", tr("没有找到图片"));
-            return;
-        }
-        qInfo() << QString("there are %1 pics.").arg(pics.length());
-        appModel->setPics(pics);
-
-        QImage image(appModel->getPicsFolder() + QDir::separator() + appModel->currPic());
-        QImage scaled = image.scaled(AppModel::Fixed_Width, AppModel::Fixed_Height, Qt::KeepAspectRatio);
-        imageLabel->setPixmap(QPixmap::fromImage(scaled));
-//
+    if (dir.isEmpty()) {
+        return;
     }
+    // Do something with the selected directory
+    qInfo() << dir;
+    appModel->setPicsFolder(dir);
+    const QStringList &files = QDir(appModel->getPicsFolder()).entryList(QDir::Filter::Files,
+                                                                         QDir::SortFlag::Name |
+                                                                         QDir::SortFlag::Time);
+    QRegExp regexp("\\.(png|jpg)$");
+    const QStringList &pics = files.filter(regexp);
+    if (pics.length() < 1) {
+        //TODO : 这里Information没有显示
+        QMessageBox::information(nullptr, "Information", tr("没有找到图片"));
+        return;
+    }
+    qInfo() << QString("there are %1 pics.").arg(pics.length());
+    appModel->initPics(pics);
+    showImage(appModel->currPic());
+    qInfo() << appModel->debugInfo();
+}
+
+void MainWindow::showImage(const QString &pic) {
+    QImage image(appModel->getPicsFolder() + QDir::separator() + pic);
+    QImage scaled = image.scaled(AppModel::Fixed_Width, AppModel::Fixed_Height, Qt::KeepAspectRatio);
+    imageLabel->setPixmap(QPixmap::fromImage(scaled));
 }
 
 void MainWindow::onTmpFolderClicked() {
@@ -117,8 +123,20 @@ void MainWindow::onUndoClicked() {
 
 void MainWindow::onBackClicked() {
     // Implement the functionality for the "Back" button
+    QString pic = appModel->prevPic();
+    if (pic == nullptr) {
+        return;
+    }
+    qInfo() << appModel->debugInfo();
+    showImage(pic);
 }
 
 void MainWindow::onForwardClicked() {
     // Implement the functionality for the "Forward" button
+    QString pic = appModel->nextPic();
+    if (pic == nullptr) {
+        return;
+    }
+    qInfo() << appModel->debugInfo();
+    showImage(pic);
 }

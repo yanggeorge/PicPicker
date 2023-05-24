@@ -20,15 +20,17 @@ public:
 
     QString getPicsFolder();
 
-    void setPics(const QStringList &filenames);
+    void initPics(const QStringList &filenames);
 
     QStringList getPics();
 
     int getIndex() const;
 
-    QString currPic();
+    QString currPic() const;
     QString nextPic();
     QString prevPic();
+
+    QString debugInfo() const;
 
 private:
     QString picsFolder = QString{};
