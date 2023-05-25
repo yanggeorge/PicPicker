@@ -20,7 +20,7 @@ public:
 private slots:
 
     void onPicsFolderClicked();
-    void onTmpFolderClicked();
+    void onTempFolderClicked();
     void onDelClicked();
     void onUndoClicked();
     void onBackClicked();

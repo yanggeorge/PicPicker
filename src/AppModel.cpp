@@ -3,28 +3,32 @@
 //
 
 #include "AppModel.h"
-
-#include <utility>
+#include <QDir>
+#include <QStandardPaths>
+#include <QDebug>
 
 QString AppModel::getPicsFolder() {
-    return this->picsFolder;
+    return picsFolder;
+}
+
+QString AppModel::getTempFolder() {
+    return tempFolder;
 }
 
 void AppModel::setPicsFolder(const QString &dir) {
-    this->picsFolder = dir;
+    picsFolder = dir;
 }
 
 void AppModel::initPics(const QStringList &filenames) {
-    this->pics = filenames;
-    this->index = 0;
+    pics = filenames;
 }
 
 QStringList AppModel::getPics() {
-    return this->pics;
+    return pics;
 }
 
 int AppModel::getIndex() const {
-    return this->index;
+    return index;
 }
 
 QString AppModel::currPic() const {
@@ -51,16 +55,43 @@ QString AppModel::prevPic() {
 }
 
 QString AppModel::debugInfo() const {
-    if(pics.length() == 0) {
-        return "pics hasn't inited";
+    if (pics.length() == 0) {
+        return "pics is not found";
     }
 
     return QString("%1 [%2/%3] %4")
             .arg(picsFolder)
-            .arg(index+1)
+            .arg(index + 1)
             .arg(pics.length())
             .arg(currPic());
 }
 
 
 AppModel::AppModel() = default;
+
+int AppModel::init() {
+    index = 0;
+    picsFolder = QDir::homePath();
+    if (tempFolder == nullptr) {
+        QString homeDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+        qInfo() << "homeDir = " << homeDir ;
+        QString tmpPath = QDir(homeDir).filePath(DEFAULT_TEMP_DIR);
+        qInfo() << "tmpPath = " << tmpPath ;
+        QDir tmpDir(tmpPath);
+        if (!tmpDir.exists()) {
+            if (tmpDir.mkpath(tmpPath)) {
+                // Directory created successfully
+                qInfo() << "tmpPath = " << tmpPath ;
+            } else {
+                // Error creating directory
+                return 1;
+            }
+        } else {
+            //TODO Directory already exists
+        }
+        tempFolder = tmpPath;
+    }
+    qInfo() << "picsFolder = " << picsFolder ;
+    qInfo() << "tempFolder = " << tempFolder ;
+    return 0;
+};

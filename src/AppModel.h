@@ -7,18 +7,25 @@
 
 
 #include <QObject>
+#include <QDir>
 
 class AppModel : public QObject {
 Q_OBJECT
 public:
     AppModel();
 
+    int init();
+
     static const int Fixed_Height = 600;
     static const int Fixed_Width = 800;
+    const QString APP_DIR = ".pickpic";
+    const QString DEFAULT_TEMP_DIR = APP_DIR + QDir::separator() + "temp";
 
     void setPicsFolder(const QString &dir);
 
     QString getPicsFolder();
+
+    QString getTempFolder();
 
     void initPics(const QStringList &filenames);
 
@@ -27,17 +34,20 @@ public:
     int getIndex() const;
 
     QString currPic() const;
+
     QString nextPic();
+
     QString prevPic();
 
     QString debugInfo() const;
 
 private:
-    QString picsFolder = QString{};
-    QString tmpFolder = QString{};
+    QString picsFolder = nullptr;
+    QString tempFolder = nullptr;
 
     QStringList pics = QStringList{};
     int index = 0;
+
 };
 
 

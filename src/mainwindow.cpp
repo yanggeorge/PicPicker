@@ -28,6 +28,12 @@ QT_END_NAMESPACE
 MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent) {
     appModel = new AppModel();
+    if(int ret = appModel->init() != 0) {
+        if(ret == 1) {
+            QMessageBox::warning(nullptr, "Warning", tr("创建文件失败"));
+            return ;
+        }
+    }
     // Create the toolbar
     toolbar = new QToolBar(this);
     addToolBar(toolbar);
@@ -36,9 +42,9 @@ MainWindow::MainWindow(QWidget *parent)
     QAction *sourceDirButton = new QAction(QIcon(":/icons/pics-folder"), tr("Pics Folder"), this);
     toolbar->addAction(sourceDirButton);
 
-    // Create the "Tmp Dir" button
-    QAction *tmpDirButton = new QAction(QIcon(":/icons/delete-folder.png"), tr("Tmp Folder"), this);
-    toolbar->addAction(tmpDirButton);
+    // Create the "Temp Dir" button
+    QAction *tempDirButton = new QAction(QIcon(":/icons/delete-folder.png"), tr("Temp Folder"), this);
+    toolbar->addAction(tempDirButton);
 
     // Create the "Del" button
     QAction *delButton = new QAction(QIcon(":/icons/delete.png"), tr("Del"), this);
@@ -61,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Connect the button signals to slots
     connect(sourceDirButton, &QAction::triggered, this, &MainWindow::onPicsFolderClicked);
-    connect(tmpDirButton, &QAction::triggered, this, &MainWindow::onTmpFolderClicked);
+    connect(tempDirButton, &QAction::triggered, this, &MainWindow::onTempFolderClicked);
     connect(delButton, &QAction::triggered, this, &MainWindow::onDelClicked);
     connect(reDelButton, &QAction::triggered, this, &MainWindow::onUndoClicked);
     connect(backButton, &QAction::triggered, this, &MainWindow::onBackClicked);
@@ -78,8 +84,7 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 void MainWindow::onPicsFolderClicked() {
-    auto openDir = appModel->getPicsFolder() == nullptr ? QDir::homePath() : appModel->getPicsFolder();
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Choose Pictures Folder"), openDir);
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Choose Pictures Folder"), appModel->getPicsFolder());
     if (dir.isEmpty()) {
         return;
     }
@@ -108,8 +113,9 @@ void MainWindow::showImage(const QString &pic) {
     imageLabel->setPixmap(QPixmap::fromImage(scaled));
 }
 
-void MainWindow::onTmpFolderClicked() {
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Choose Tmp Folder"), QDir::homePath());
+void MainWindow::onTempFolderClicked() {
+    qInfo() << appModel->getTempFolder();
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Choose Temp Folder"), appModel->getTempFolder());
     if (!dir.isEmpty()) {
         // Do something with the selected directory
     }
