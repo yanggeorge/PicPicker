@@ -8,6 +8,7 @@
 
 #include <QObject>
 #include <QDir>
+#include <QStack>
 
 class AppModel : public QObject {
 Q_OBJECT
@@ -39,6 +40,10 @@ public:
 
     QString prevPic();
 
+    QString delCurrPic();
+
+    QString unDelPic();
+
     QString debugInfo() const;
 
 private:
@@ -48,6 +53,7 @@ private:
     QStringList pics = QStringList{};
     int index = 0;
 
+    QStack<QString> delPics = QStack<QString>{};
 };
 
 

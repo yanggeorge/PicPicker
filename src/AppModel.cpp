@@ -20,7 +20,8 @@ void AppModel::setPicsFolder(const QString &dir) {
 }
 
 void AppModel::initPics(const QStringList &filenames) {
-    pics = filenames;
+    pics.clear();
+    pics.append(filenames);
 }
 
 QStringList AppModel::getPics() {
@@ -54,6 +55,26 @@ QString AppModel::prevPic() {
     return pics[index];
 }
 
+
+QString AppModel::delCurrPic() {
+    auto delPic = pics[index];
+    delPics.push(delPic);
+    pics.removeAt(index);
+    if (index + 1 < pics.length()) {
+        index += 1;
+    }
+    return delPic;
+};
+
+QString AppModel::unDelPic() {
+    if (delPics.length() == 0) {
+        return nullptr;
+    }
+    QString pic = delPics.pop();
+    pics.insert(index, pic);
+    return pic;
+}
+
 QString AppModel::debugInfo() const {
     if (pics.length() == 0) {
         return "pics is not found";
@@ -74,14 +95,14 @@ int AppModel::init() {
     picsFolder = QDir::homePath();
     if (tempFolder == nullptr) {
         QString homeDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-        qInfo() << "homeDir = " << homeDir ;
+        qInfo() << "homeDir = " << homeDir;
         QString tmpPath = QDir(homeDir).filePath(DEFAULT_TEMP_DIR);
-        qInfo() << "tmpPath = " << tmpPath ;
+        qInfo() << "tmpPath = " << tmpPath;
         QDir tmpDir(tmpPath);
         if (!tmpDir.exists()) {
             if (tmpDir.mkpath(tmpPath)) {
                 // Directory created successfully
-                qInfo() << "tmpPath = " << tmpPath ;
+                qInfo() << "tmpPath = " << tmpPath;
             } else {
                 // Error creating directory
                 return 1;
@@ -91,7 +112,10 @@ int AppModel::init() {
         }
         tempFolder = tmpPath;
     }
-    qInfo() << "picsFolder = " << picsFolder ;
-    qInfo() << "tempFolder = " << tempFolder ;
+    qInfo() << "picsFolder = " << picsFolder;
+    qInfo() << "tempFolder = " << tempFolder;
+
     return 0;
-};
+}
+
+

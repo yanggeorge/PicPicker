@@ -34,6 +34,10 @@ private:
     QToolBar* toolbar;
     QStatusBar* statusBar;
     QLabel* imageLabel;
+
+    void moveToTempFolder(const QString &qString);
+
+    void moveToPicsFolder(const QString &qString);
 };
 
 

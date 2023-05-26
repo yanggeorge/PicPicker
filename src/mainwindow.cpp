@@ -28,10 +28,10 @@ QT_END_NAMESPACE
 MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent) {
     appModel = new AppModel();
-    if(int ret = appModel->init() != 0) {
-        if(ret == 1) {
+    if (int ret = appModel->init() != 0) {
+        if (ret == 1) {
             QMessageBox::warning(nullptr, "Warning", tr("创建文件失败"));
-            return ;
+            return;
         }
     }
     // Create the toolbar
@@ -49,10 +49,14 @@ MainWindow::MainWindow(QWidget *parent)
     // Create the "Del" button
     QAction *delButton = new QAction(QIcon(":/icons/delete.png"), tr("Del"), this);
     toolbar->addAction(delButton);
+    delButton->setShortcut(QKeySequence(Qt::Key_Up));
 
-    // Create the "Re-Del" button
-    QAction *reDelButton = new QAction(QIcon(":/icons/undo.png"), tr("Undo"), this);
-    toolbar->addAction(reDelButton);
+    // Create the "un-Del" button
+    QAction *unDelButton = new QAction(QIcon(":/icons/undo.png"), tr("Undo"), this);
+    toolbar->addAction(unDelButton);
+    // interesting CTRL+Z become Command + Z on macOS
+//    unDelButton->setShortcut(QKeySequence::fromString("CTRL+Z"));
+    unDelButton->setShortcut(QKeySequence(Qt::Key_Down));
 
     // Create the "Back" button
     QAction *backButton = new QAction(QIcon(":/icons/back.png"), tr("Previous Pic"), this);
@@ -69,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(sourceDirButton, &QAction::triggered, this, &MainWindow::onPicsFolderClicked);
     connect(tempDirButton, &QAction::triggered, this, &MainWindow::onTempFolderClicked);
     connect(delButton, &QAction::triggered, this, &MainWindow::onDelClicked);
-    connect(reDelButton, &QAction::triggered, this, &MainWindow::onUndoClicked);
+    connect(unDelButton, &QAction::triggered, this, &MainWindow::onUndoClicked);
     connect(backButton, &QAction::triggered, this, &MainWindow::onBackClicked);
     connect(forwardButton, &QAction::triggered, this, &MainWindow::onForwardClicked);
 
@@ -123,10 +127,33 @@ void MainWindow::onTempFolderClicked() {
 
 void MainWindow::onDelClicked() {
     // Implement the functionality for the "Del" button
+    QString delPic = appModel->delCurrPic();
+
+    moveToTempFolder(delPic);
+
+    QString pic = appModel->currPic();
+    if (pic == nullptr) {
+        return;
+    }
+    pic = appModel->prevPic();
+    showImage(pic);
+    statusBar->showMessage(appModel->debugInfo());
 }
 
 void MainWindow::onUndoClicked() {
     // Implement the functionality for the "Re-Del" button
+    QString unDelPic = appModel->unDelPic();
+    if (unDelPic == nullptr) {
+        return;
+    }
+    moveToPicsFolder(unDelPic);
+
+    QString pic = appModel->currPic();
+    if (pic == nullptr) {
+        return;
+    }
+    showImage(pic);
+    statusBar->showMessage(appModel->debugInfo());
 }
 
 void MainWindow::onBackClicked() {
@@ -147,4 +174,26 @@ void MainWindow::onForwardClicked() {
     }
     showImage(pic);
     statusBar->showMessage(appModel->debugInfo());
+}
+
+void MainWindow::moveToTempFolder(const QString &qString) {
+    QString src = appModel->getPicsFolder() + QDir::separator() + qString;
+    QString target = appModel->getTempFolder() + QDir::separator() + qString;
+    QFile file(src);
+    if (file.rename(target)) {
+        qDebug() << "File moved successfully!";
+    } else {
+        qDebug() << "Failed to move file:" << file.errorString();
+    }
+}
+
+void MainWindow::moveToPicsFolder(const QString &qString) {
+    QString src = appModel->getTempFolder() + QDir::separator() + qString;
+    QString target = appModel->getPicsFolder() + QDir::separator() + qString;
+    QFile file(src);
+    if (file.rename(target)) {
+        qDebug() << "File moved successfully!";
+    } else {
+        qDebug() << "Failed to move file:" << file.errorString();
+    }
 }
