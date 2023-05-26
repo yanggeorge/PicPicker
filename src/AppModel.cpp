@@ -93,6 +93,7 @@ QString AppModel::debugInfo() const {
 AppModel::AppModel() = default;
 
 int AppModel::init() {
+    // firstly, normal init
     index = 0;
     picsFolder = QDir::homePath();
     if (tempFolder == nullptr) {
@@ -116,7 +117,30 @@ int AppModel::init() {
     }
     qInfo() << "picsFolder = " << picsFolder;
     qInfo() << "tempFolder = " << tempFolder;
+    // secondly, init from data.json
+    QString dataJsonPath = this->getStoreDataPath();
 
+    QFile file(dataJsonPath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Failed to open file";
+        return 2;
+    }
+
+    QByteArray jsonData = file.readAll();
+    QJsonParseError error{};
+    QJsonDocument doc = QJsonDocument::fromJson(jsonData, &error);
+
+    if (doc.isNull()) {
+        qDebug() << "Failed to parse JSON: " << error.errorString();
+        return 3;
+    }
+
+    if (!doc.isObject()) {
+        qDebug() << "JSON is not an object";
+        return 4;
+    }
+
+    this->fromJson(doc.object());
     return 0;
 }
 
@@ -151,7 +175,11 @@ int AppModel::fromJson(const QString &jsonString) {
         qDebug() << "JSON is not an object";
         return 2;
     }
-    QJsonObject obj = doc.object();
+    this->fromJson(doc.object());
+    return 0;
+}
+
+int AppModel::fromJson(const QJsonObject &obj) {
     picsFolder = obj["picsFolder"].toString();
     tempFolder = obj["tempFolder"].toString();
     index = obj["index"].toInt();
@@ -165,5 +193,17 @@ int AppModel::fromJson(const QString &jsonString) {
         }
     return 0;
 }
+
+
+QString AppModel::getStoreDataPath() {
+    QString homeDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    return QDir(homeDir).filePath(APP_DIR + QDir::separator() + "data.json");
+}
+
+QString AppModel::getStoreDataBakPath() {
+    QString homeDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    return QDir(homeDir).filePath(APP_DIR + QDir::separator() + "data.json.bak");
+}
+
 
 

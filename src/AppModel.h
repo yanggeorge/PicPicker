@@ -51,6 +51,12 @@ public:
 
     int fromJson(const QString &qString);
 
+    int fromJson(const QJsonObject &obj);
+
+    QString getStoreDataPath();
+
+    QString getStoreDataBakPath();
+
 private:
     QString picsFolder = nullptr;
     QString tempFolder = nullptr;

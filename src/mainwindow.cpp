@@ -27,6 +27,7 @@ QT_END_NAMESPACE
 
 MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent) {
+    // init appModel
     appModel = new AppModel();
     if (int ret = appModel->init() != 0) {
         if (ret == 1) {
@@ -85,6 +86,9 @@ MainWindow::MainWindow(QWidget *parent)
     statusBar = new QStatusBar(this);
     this->setStatusBar(statusBar);
     statusBar->showMessage(appModel->debugInfo());
+    if(appModel->currPic() != nullptr) {
+        showImage(appModel->currPic());
+    }
 }
 
 void MainWindow::onPicsFolderClicked() {
@@ -199,4 +203,25 @@ void MainWindow::moveToPicsFolder(const QString &qString) {
     } else {
         qDebug() << "Failed to move file:" << file.errorString();
     }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+    qDebug() << "Closing the application...";
+    // store state
+    QJsonDocument doc(appModel->toJson());
+    QFile old(appModel->getStoreDataPath());
+    if (old.exists()) {
+        old.rename(appModel->getStoreDataBakPath());
+        qDebug() << "data.json exists and rename to data.json.bak !";
+    }
+
+    QFile dataJsonFile(appModel->getStoreDataPath());
+    if (!dataJsonFile.open(QIODevice::WriteOnly)) {
+        qDebug() << "Failed to open old";
+        return;
+    }
+
+    dataJsonFile.write(doc.toJson());
+    dataJsonFile.close();
+    qDebug() << "File saved";
 }

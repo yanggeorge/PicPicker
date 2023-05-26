@@ -26,6 +26,8 @@ private slots:
     void onBackClicked();
     void onForwardClicked();
 
+protected:
+    void closeEvent(QCloseEvent *event) override;
 private:
     void showImage(const QString& pic);
 
