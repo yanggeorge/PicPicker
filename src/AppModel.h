@@ -9,6 +9,7 @@
 #include <QObject>
 #include <QDir>
 #include <QStack>
+#include <QJsonObject>
 
 class AppModel : public QObject {
 Q_OBJECT
@@ -45,6 +46,10 @@ public:
     QString unDelPic();
 
     QString debugInfo() const;
+
+    QJsonObject toJson() const;
+
+    int fromJson(const QString &qString);
 
 private:
     QString picsFolder = nullptr;

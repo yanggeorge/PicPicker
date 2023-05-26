@@ -6,6 +6,8 @@
 #include <QDir>
 #include <QStandardPaths>
 #include <QDebug>
+#include <QJsonArray>
+#include <QJsonParseError>
 
 QString AppModel::getPicsFolder() {
     return picsFolder;
@@ -115,6 +117,52 @@ int AppModel::init() {
     qInfo() << "picsFolder = " << picsFolder;
     qInfo() << "tempFolder = " << tempFolder;
 
+    return 0;
+}
+
+QJsonObject AppModel::toJson() const {
+    QJsonObject obj;
+    obj["picsFolder"] = picsFolder;
+    obj["tempFolder"] = tempFolder;
+    QJsonArray picsArray;
+            foreach (const QString &s, pics) {
+            picsArray.append(s);
+        };
+    obj["pics"] = picsArray;
+    obj["index"] = index;
+    QJsonArray delPicsArray;
+            foreach (const QString &s, delPics) {
+            delPicsArray.append(s);
+        };
+    obj["delPics"] = delPicsArray;
+    return obj;
+}
+
+int AppModel::fromJson(const QString &jsonString) {
+    QJsonParseError error{};
+    QJsonDocument doc = QJsonDocument::fromJson(jsonString.toUtf8(), &error);
+
+    if (doc.isNull()) {
+        qDebug() << "Failed to parse JSON: " << error.errorString();
+        return 1;
+    }
+
+    if (!doc.isObject()) {
+        qDebug() << "JSON is not an object";
+        return 2;
+    }
+    QJsonObject obj = doc.object();
+    picsFolder = obj["picsFolder"].toString();
+    tempFolder = obj["tempFolder"].toString();
+    index = obj["index"].toInt();
+    QJsonArray picsArray = obj["pics"].toArray();
+            foreach(const QJsonValue &v, picsArray) {
+            pics.append(v.toString());
+        }
+    QJsonArray delPicsArray = obj["delPics"].toArray();
+            foreach(const QJsonValue &v, delPicsArray) {
+            delPics.push(v.toString());
+        }
     return 0;
 }
 

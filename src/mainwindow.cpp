@@ -138,6 +138,9 @@ void MainWindow::onDelClicked() {
     pic = appModel->prevPic();
     showImage(pic);
     statusBar->showMessage(appModel->debugInfo());
+
+    QJsonDocument doc(appModel->toJson());
+    qDebug() << doc.toJson(QJsonDocument::Compact);
 }
 
 void MainWindow::onUndoClicked() {
