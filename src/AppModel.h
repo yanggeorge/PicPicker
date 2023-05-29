@@ -20,7 +20,7 @@ public:
 
     static const int Fixed_Height = 600;
     static const int Fixed_Width = 800;
-    const QString APP_DIR = ".pickpic";
+    static const QString APP_DIR ;
     const QString DEFAULT_TEMP_DIR = APP_DIR + QDir::separator() + "temp";
 
     void setPicsFolder(const QString &dir);

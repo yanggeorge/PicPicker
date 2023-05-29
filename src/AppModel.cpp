@@ -9,6 +9,8 @@
 #include <QJsonArray>
 #include <QJsonParseError>
 
+const QString AppModel::APP_DIR = QStringLiteral(".pickpic");
+
 QString AppModel::getPicsFolder() {
     return picsFolder;
 }
