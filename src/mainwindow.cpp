@@ -102,8 +102,8 @@ void MainWindow::onPicsFolderClicked() {
     const QStringList &files = QDir(appModel->getPicsFolder()).entryList(QDir::Filter::Files,
                                                                          QDir::SortFlag::Name |
                                                                          QDir::SortFlag::Time);
-    QRegExp regexp("\\.(png|jpg)$");
-    const QStringList &pics = files.filter(regexp);
+    QRegularExpression re("(?i)\\.(png|jpg)$", QRegularExpression::CaseInsensitiveOption);
+    const QStringList &pics = files.filter(re);
     if (pics.length() < 1) {
         //TODO : 这里Information没有显示
         QMessageBox::information(nullptr, "Information", tr("没有找到图片"));
@@ -130,6 +130,10 @@ void MainWindow::onTempFolderClicked() {
 }
 
 void MainWindow::onDelClicked() {
+    if(appModel->currPic() == nullptr) {
+        qInfo() << "there no pics left";
+        return;
+    }
     // Implement the functionality for the "Del" button
     QString delPic = appModel->delCurrPic();
 
@@ -137,6 +141,7 @@ void MainWindow::onDelClicked() {
 
     QString pic = appModel->currPic();
     if (pic == nullptr) {
+        imageLabel->setPixmap(QPixmap());
         return;
     }
     pic = appModel->prevPic();

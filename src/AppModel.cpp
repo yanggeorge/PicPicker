@@ -26,6 +26,8 @@ void AppModel::setPicsFolder(const QString &dir) {
 void AppModel::initPics(const QStringList &filenames) {
     pics.clear();
     pics.append(filenames);
+    index = 0;
+    delPics.clear();
 }
 
 QStringList AppModel::getPics() {
