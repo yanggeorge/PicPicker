@@ -193,7 +193,7 @@ void MainWindow::moveToTempFolder(const QString &qString) {
     QString target = appModel->getTempFolder() + QDir::separator() + qString;
     QFile file(src);
     if (file.rename(target)) {
-        qDebug() << "File moved successfully!";
+        qDebug() << "File moved successfully";
     } else {
         qDebug() << "Failed to move file:" << file.errorString();
     }
@@ -217,7 +217,7 @@ void MainWindow::closeEvent(QCloseEvent *event) {
     QFile old(appModel->getStoreDataPath());
     if (old.exists()) {
         old.rename(appModel->getStoreDataBakPath());
-        qDebug() << "data.json exists and rename to data.json.bak !";
+        qDebug() << "data.json exists and rename to data.json.bak";
     }
 
     QFile dataJsonFile(appModel->getStoreDataPath());

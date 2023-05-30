@@ -1,5 +1,7 @@
 QT += widgets core gui
 
+ICON = AppIcon.icns
+
 CONFIG += c++11
 
 SOURCES += src/main.cpp src/mainwindow.cpp src/AppModel.cpp
