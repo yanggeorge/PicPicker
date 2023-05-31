@@ -10,4 +10,4 @@ HEADERS += src/AppModel.h src/mainwindow.h src/log.h
 
 RESOURCES += application.qrc
 
-TARGET = pickpic
+TARGET = picpicker
