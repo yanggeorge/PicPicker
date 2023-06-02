@@ -15,13 +15,13 @@ find_package(Qt5 COMPONENTS
 
 QT5_ADD_RESOURCES(MyResources application.qrc)
 
-add_executable(picpicker
+add_executable(PicPicker
         src/main.cpp
         src/mainwindow.cpp
         ${MyResources}
         src/AppModel.cpp
         )
-target_link_libraries(picpicker
+target_link_libraries(PicPicker
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
