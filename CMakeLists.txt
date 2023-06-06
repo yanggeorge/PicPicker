@@ -26,10 +26,6 @@ set(l10n_files
 
 QT5_ADD_RESOURCES(MyResources application.qrc)
 
-
-get_target_property(_qmake_executable Qt5::qmake IMPORTED_LOCATION)
-get_filename_component(_qt_bin_dir "${_qmake_executable}" DIRECTORY)
-
 set(MACOSX_BUNDLE_ICON_FILE AppIcon.icns)
 set(app_icon_macos "${CMAKE_SOURCE_DIR}/AppIcon.icns")
 set_source_files_properties(${app_icon_macos} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
@@ -43,7 +39,7 @@ add_executable(PicPicker
         )
 
 set_target_properties(PicPicker PROPERTIES
-        MACOSX_BUNDLE ON
+        MACOSX_BUNDLE TRUE
         )
 
 target_link_libraries(PicPicker
@@ -53,17 +49,31 @@ target_link_libraries(PicPicker
         Qt5::Xml
         )
 
+get_target_property(_qmake_executable Qt5::qmake IMPORTED_LOCATION)
+get_filename_component(_qt_bin_dir "${_qmake_executable}" DIRECTORY)
+find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS "${_qt_bin_dir}")
 
-# #TODO here is a bug, this custom command always executes before copying icns to resources.
+add_custom_command(TARGET PicPicker POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        "${CMAKE_CURRENT_SOURCE_DIR}/AppIcon.icns"
+        "$<TARGET_FILE_DIR:PicPicker>/../Resources/"
+        COMMENT "Copy AppIcon.icns to Resources/"
+        &&
+        COMMAND "${MACDEPLOYQT_EXECUTABLE}"
+        ARGS "PicPicker.app" "-dmg" "-always-overwrite" "-no-strip"
+        COMMENT "Execute macdeployqt to create macOS bundle"
+        )
+
+# here is a bug, this custom command always executes before copying icns to resources.
 #        [100%] Linking CXX executable PicPicker.app/Contents/MacOS/PicPicker
 #        Execute macdeployqt to create macOS bundle
 #        Copying OS X content PicPicker.app/Contents/Resources/AppIcon.icns
 #        [100%] Built target PicPicker
 #   alternative method is running below on shell
-#           macdeployqt PicPicker.app  -dmg
+#           macdeployqt PicPicker.app  -dmg -always-overwrite
 # https://riptutorial.com/qt/example/24133/integrating-with-cmake
 #find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS "${_qt_bin_dir}")
 #add_custom_command(TARGET PicPicker POST_BUILD
 #        COMMAND "${MACDEPLOYQT_EXECUTABLE}"
-#        ARGS "PicPicker.app" "-dmg"
+#        ARGS "PicPicker.app" "-dmg" "-always-overwrite"
 #        COMMENT "Execute macdeployqt to create macOS bundle")
