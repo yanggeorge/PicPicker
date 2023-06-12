@@ -49,20 +49,24 @@ target_link_libraries(PicPicker
         Qt5::Xml
         )
 
-get_target_property(_qmake_executable Qt5::qmake IMPORTED_LOCATION)
-get_filename_component(_qt_bin_dir "${_qmake_executable}" DIRECTORY)
-find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS "${_qt_bin_dir}")
+# cmake -DDEPLOY=1  ..
+if (DEFINED DEPLOY)
+    message("to execute macdeployqt")
+    get_target_property(_qmake_executable Qt5::qmake IMPORTED_LOCATION)
+    get_filename_component(_qt_bin_dir "${_qmake_executable}" DIRECTORY)
+    find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS "${_qt_bin_dir}")
 
-add_custom_command(TARGET PicPicker POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-        "${CMAKE_CURRENT_SOURCE_DIR}/AppIcon.icns"
-        "$<TARGET_FILE_DIR:PicPicker>/../Resources/"
-        COMMENT "Copy AppIcon.icns to Resources/"
-        &&
-        COMMAND "${MACDEPLOYQT_EXECUTABLE}"
-        ARGS "PicPicker.app" "-dmg" "-always-overwrite" "-no-strip"
-        COMMENT "Execute macdeployqt to create macOS bundle"
-        )
+    add_custom_command(TARGET PicPicker POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy
+            "${CMAKE_CURRENT_SOURCE_DIR}/AppIcon.icns"
+            "$<TARGET_FILE_DIR:PicPicker>/../Resources/"
+            COMMENT "Copy AppIcon.icns to Resources/"
+            &&
+            COMMAND "${MACDEPLOYQT_EXECUTABLE}"
+            ARGS "PicPicker.app" "-dmg" "-always-overwrite" "-no-strip"
+            COMMENT "Execute macdeployqt to create macOS bundle"
+            )
+endif ()
 
 # here is a bug, this custom command always executes before copying icns to resources.
 #        [100%] Linking CXX executable PicPicker.app/Contents/MacOS/PicPicker
