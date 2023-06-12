@@ -19,6 +19,8 @@ public:
 
 private slots:
 
+    void onNewProjectClicked();
+    void onAboutClicked();
     void onPicsFolderClicked();
     void onTempFolderClicked();
     void onDelClicked();
@@ -36,6 +38,8 @@ private:
     QToolBar* toolbar;
     QStatusBar* statusBar;
     QLabel* imageLabel;
+    QMenuBar* menuBar;
+
 
     void moveToTempFolder(const QString &qString);
 

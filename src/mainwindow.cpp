@@ -35,6 +35,21 @@ MainWindow::MainWindow(QWidget *parent)
             return;
         }
     }
+    // init menuBar
+    menuBar = new QMenuBar(this);
+    setMenuBar(menuBar);
+    // add file fileMenu
+    auto *fileMenu = new QMenu(tr("File"));
+    menuBar->addMenu(fileMenu);
+    auto *newProject = new QAction(tr("New Project"), this);
+    fileMenu->addAction(newProject);
+
+    // Add the Help fileMenu
+    auto *helpMenu = menuBar->addMenu(tr("Help"));
+    menuBar->addMenu(helpMenu);
+    auto *aboutAction = new QAction(tr("About"), this);
+    helpMenu->addAction(aboutAction);
+
     // Create the toolbar
     toolbar = new QToolBar(this);
     addToolBar(toolbar);
@@ -71,6 +86,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     // Connect the button signals to slots
+    connect(newProject, &QAction::triggered, this, &MainWindow::onNewProjectClicked);
+    connect(aboutAction, &QAction::triggered, this, &MainWindow::onAboutClicked);
     connect(sourceDirButton, &QAction::triggered, this, &MainWindow::onPicsFolderClicked);
     connect(tempDirButton, &QAction::triggered, this, &MainWindow::onTempFolderClicked);
     connect(delButton, &QAction::triggered, this, &MainWindow::onDelClicked);
@@ -89,6 +106,14 @@ MainWindow::MainWindow(QWidget *parent)
     if(appModel->currPic() != nullptr) {
         showImage(appModel->currPic());
     }
+}
+
+void MainWindow::onNewProjectClicked() {
+    qDebug() << "new project";
+}
+
+void MainWindow::onAboutClicked() {
+    qDebug() << "about app";
 }
 
 void MainWindow::onPicsFolderClicked() {

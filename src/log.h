@@ -11,7 +11,7 @@
 #include <QMutex>
 
 // if not define _DEBUG, logging to file
-//#define _DEBUG
+#define _DEBUG
 
 namespace QT_LOG {
     //default log filename
