@@ -8,6 +8,7 @@
 #include <QMainWindow>
 #include <QLabel>
 #include "AppModel.h"
+#include "ui/AboutDialog.h"
 
 class MainWindow : public QMainWindow
 {

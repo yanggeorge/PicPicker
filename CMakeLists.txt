@@ -19,6 +19,9 @@ set(SOURCES
         src/main.cpp
         src/mainwindow.cpp
         src/AppModel.cpp
+        src/ui/aboutdialog.cpp
+        src/ui/aboutdialog.h
+        src/ui/aboutdialog.ui
         )
 
 set(l10n_files

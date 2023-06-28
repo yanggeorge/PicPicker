@@ -114,6 +114,8 @@ void MainWindow::onNewProjectClicked() {
 
 void MainWindow::onAboutClicked() {
     qDebug() << "about app";
+    AboutDialog dialog;
+    dialog.exec();
 }
 
 void MainWindow::onPicsFolderClicked() {
