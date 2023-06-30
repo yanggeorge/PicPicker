@@ -2,8 +2,8 @@
 // Created by 杨明 on 2023/5/24.
 //
 
-#ifndef PICKPIC_APPMODEL_H
-#define PICKPIC_APPMODEL_H
+#ifndef PICPICKER_APPMODEL_H
+#define PICPICKER_APPMODEL_H
 
 
 #include <QObject>
@@ -20,7 +20,7 @@ public:
 
     static const int Fixed_Height = 600;
     static const int Fixed_Width = 800;
-    static const QString APP_DIR ;
+    static const QString APP_DIR;
     const QString DEFAULT_TEMP_DIR = APP_DIR + QDir::separator() + "temp";
 
     void setPicsFolder(const QString &dir);
@@ -68,4 +68,4 @@ private:
 };
 
 
-#endif //PICKPIC_APPMODEL_H
+#endif //PICPICKER_APPMODEL_H

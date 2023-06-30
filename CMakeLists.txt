@@ -18,10 +18,18 @@ find_package(Qt5 COMPONENTS
 set(SOURCES
         src/main.cpp
         src/mainwindow.cpp
-        src/AppModel.cpp
+        src/model/appmodel.cpp
         src/ui/aboutdialog.cpp
         src/ui/aboutdialog.h
         src/ui/aboutdialog.ui
+        src/ui/picpicker.cpp
+        src/ui/picpicker.h
+        src/ui/picpicker.ui
+        src/controller/picpickercontroller.cpp
+        src/controller/picpickercontroller.h
+        src/model/appconstants.cpp
+        src/model/appinfo.cpp
+        src/model/appinfo.h
         )
 
 set(l10n_files

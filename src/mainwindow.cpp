@@ -103,7 +103,7 @@ MainWindow::MainWindow(QWidget *parent)
     statusBar = new QStatusBar(this);
     this->setStatusBar(statusBar);
     statusBar->showMessage(appModel->debugInfo());
-    if(appModel->currPic() != nullptr) {
+    if (appModel->currPic() != nullptr) {
         showImage(appModel->currPic());
     }
 }
@@ -115,6 +115,7 @@ void MainWindow::onNewProjectClicked() {
 void MainWindow::onAboutClicked() {
     qDebug() << "about app";
     AboutDialog dialog;
+    dialog.setModal(true);
     dialog.exec();
 }
 
@@ -157,7 +158,7 @@ void MainWindow::onTempFolderClicked() {
 }
 
 void MainWindow::onDelClicked() {
-    if(appModel->currPic() == nullptr) {
+    if (appModel->currPic() == nullptr) {
         qInfo() << "there no pics left";
         return;
     }

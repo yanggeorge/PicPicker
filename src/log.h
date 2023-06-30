@@ -2,13 +2,14 @@
 // Created by 杨明 on 2023/5/29.
 //
 
-#ifndef PICKPIC_LOG_H
-#define PICKPIC_LOG_H
+#ifndef PICPICKER_LOG_H
+#define PICPICKER_LOG_H
 
 #include <QFile>
 #include <QTextStream>
 #include <QDateTime>
 #include <QMutex>
+#include <QDir>
 
 // if not define _DEBUG, logging to file
 #define _DEBUG
@@ -78,4 +79,4 @@ namespace QT_LOG {
 }
 
 
-#endif //PICKPIC_LOG_H
+#endif //PICPICKER_LOG_H

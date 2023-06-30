@@ -2,7 +2,7 @@
 // Created by 杨明 on 2023/5/24.
 //
 
-#include "AppModel.h"
+#include "appmodel.h"
 #include <QDir>
 #include <QStandardPaths>
 #include <QDebug>
