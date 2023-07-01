@@ -1,140 +1,151 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-    <class>PicPicker</class>
-    <widget class="QMainWindow" name="PicPicker">
-        <property name="geometry">
-            <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>481</width>
-                <height>334</height>
-            </rect>
-        </property>
-        <property name="windowTitle">
-            <string>PicPicker</string>
-        </property>
-        <widget class="QWidget" name="centralwidget">
-            <widget class="QLabel" name="imageLabel">
-                <property name="geometry">
-                    <rect>
-                        <x>140</x>
-                        <y>90</y>
-                        <width>131</width>
-                        <height>61</height>
-                    </rect>
-                </property>
-                <property name="text">
-                    <string>image</string>
-                </property>
-            </widget>
-        </widget>
-        <widget class="QMenuBar" name="menubar">
-            <property name="geometry">
-                <rect>
-                    <x>0</x>
-                    <y>0</y>
-                    <width>481</width>
-                    <height>24</height>
-                </rect>
-            </property>
-            <widget class="QMenu" name="menuFile">
-                <property name="title">
-                    <string>File</string>
-                </property>
-                <addaction name="actionNewProject"/>
-                <addaction name="actionQuit"/>
-            </widget>
-            <widget class="QMenu" name="menuHelp">
-                <property name="title">
-                    <string>Help</string>
-                </property>
-                <addaction name="actionAbout"/>
-            </widget>
-            <addaction name="menuFile"/>
-            <addaction name="menuHelp"/>
-        </widget>
-        <widget class="QStatusBar" name="statusbar"/>
-        <widget class="QToolBar" name="toolBar">
-            <property name="windowTitle">
-                <string>toolBar</string>
-            </property>
-            <attribute name="toolBarArea">
-                <enum>TopToolBarArea</enum>
-            </attribute>
-            <attribute name="toolBarBreak">
-                <bool>false</bool>
-            </attribute>
-            <addaction name="actionPrevPic"/>
-            <addaction name="actionNextPic"/>
-            <addaction name="actionDelPic"/>
-            <addaction name="actionUndo"/>
-        </widget>
-        <action name="actionNewProject">
-            <property name="text">
-                <string>New Project</string>
-            </property>
-        </action>
-        <action name="actionAbout">
-            <property name="text">
-                <string>About PicPicker</string>
-            </property>
-        </action>
-        <action name="actionQuit">
-            <property name="text">
-                <string>Quit</string>
-            </property>
-        </action>
-        <action name="actionNext">
-            <property name="text">
-                <string>Next</string>
-            </property>
-        </action>
-        <action name="actionPrevPic">
-            <property name="icon">
-                <iconset resource="../../application.qrc">
-                    <normaloff>:/icons/back.png</normaloff>:/icons/back.png
-                </iconset>
-            </property>
-            <property name="text">
-                <string>PrevPic</string>
-            </property>
-        </action>
-        <action name="actionNextPic">
-            <property name="icon">
-                <iconset resource="../../application.qrc">
-                    <normaloff>:/icons/forward.png</normaloff>:/icons/forward.png
-                </iconset>
-            </property>
-            <property name="text">
-                <string>NextPic</string>
-            </property>
-        </action>
-        <action name="actionDelPic">
-            <property name="icon">
-                <iconset resource="../../application.qrc">
-                    <normaloff>:/icons/delete.png</normaloff>:/icons/delete.png
-                </iconset>
-            </property>
-            <property name="text">
-                <string>DelPic</string>
-            </property>
-            <property name="iconText">
-                <string>DelPic</string>
-            </property>
-        </action>
-        <action name="actionUndo">
-            <property name="icon">
-                <iconset resource="../../application.qrc">
-                    <normaloff>:/icons/undo.png</normaloff>:/icons/undo.png
-                </iconset>
-            </property>
-            <property name="text">
-                <string>RestorePic</string>
-            </property>
-        </action>
-    </widget>
-    <resources>
-        <include location="../../application.qrc"/>
-    </resources>
-    <connections/>
+ <class>PicPicker</class>
+ <widget class="QMainWindow" name="PicPicker">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>481</width>
+    <height>334</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>PicPicker</string>
+  </property>
+  <property name="toolTipDuration">
+   <number>4</number>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <widget class="QLabel" name="imageLabel">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="text">
+     <string>image</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>481</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionNewProject"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionPrevPic"/>
+   <addaction name="actionNextPic"/>
+   <addaction name="actionDelPic"/>
+   <addaction name="actionUndo"/>
+  </widget>
+  <action name="actionNewProject">
+   <property name="text">
+    <string>New Project</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About PicPicker</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionNext">
+   <property name="text">
+    <string>Next</string>
+   </property>
+  </action>
+  <action name="actionPrevPic">
+   <property name="icon">
+    <iconset resource="../../application.qrc">
+     <normaloff>:/icons/back.png</normaloff>:/icons/back.png</iconset>
+   </property>
+   <property name="text">
+    <string>PrevPic</string>
+   </property>
+  </action>
+  <action name="actionNextPic">
+   <property name="icon">
+    <iconset resource="../../application.qrc">
+     <normaloff>:/icons/forward.png</normaloff>:/icons/forward.png</iconset>
+   </property>
+   <property name="text">
+    <string>NextPic</string>
+   </property>
+  </action>
+  <action name="actionDelPic">
+   <property name="icon">
+    <iconset resource="../../application.qrc">
+     <normaloff>:/icons/delete.png</normaloff>:/icons/delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>DelPic</string>
+   </property>
+   <property name="iconText">
+    <string>DelPic</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="icon">
+    <iconset resource="../../application.qrc">
+     <normaloff>:/icons/undo.png</normaloff>:/icons/undo.png</iconset>
+   </property>
+   <property name="text">
+    <string>RestorePic</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../../application.qrc"/>
+ </resources>
+ <connections/>
 </ui>

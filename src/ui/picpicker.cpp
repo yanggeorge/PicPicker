@@ -16,6 +16,8 @@ PicPicker::PicPicker(PicPickerController *controller, QWidget *parent) :
         m_controller(controller), QMainWindow(parent), ui(new Ui::PicPicker) {
     ui->setupUi(this);
 
+    ui->centralwidget->setFixedHeight(Fixed_Height);
+    ui->centralwidget->setFixedWidth(Fixed_Width);
     ui->imageLabel->setFixedHeight(Fixed_Height);
     ui->imageLabel->setFixedWidth(Fixed_Width);
 }
