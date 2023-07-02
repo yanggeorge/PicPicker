@@ -99,11 +99,6 @@
     <string>Quit</string>
    </property>
   </action>
-  <action name="actionNext">
-   <property name="text">
-    <string>Next</string>
-   </property>
-  </action>
   <action name="actionPrevPic">
    <property name="icon">
     <iconset resource="../../application.qrc">

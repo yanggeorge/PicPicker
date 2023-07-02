@@ -27,49 +27,29 @@ public:
 
     QString debugInfo() const;
 
-    const QString &getPicsFolder() const {
-        return m_picsFolder;
-    }
-
-    void setPicsFolder(const QString &mPicsFolder) {
-        m_picsFolder = mPicsFolder;
-    }
-
-    const QString &getTempFolder() const {
-        return m_tempFolder;
-    }
-
-    void setTempFolder(const QString &mTempFolder) {
-        m_tempFolder = mTempFolder;
-    }
-
-    QStringList getPics() const {
-        return m_pics;
-    }
-
-    void setPics(const QStringList &mPics) {
-        m_pics = mPics;
-    }
-
-    int getIndex() const {
-        return m_index;
-    }
-
-    void setIndex(int mIndex) {
-        m_index = mIndex;
-    }
-
-    const QStack<QString> &getDelPics() const {
-        return m_delPics;
-    }
-
-    void setDelPics(const QStack<QString> &mDelPics) {
-        m_delPics = mDelPics;
-    }
-
     int fromJson(const QJsonObject &obj);
 
     QJsonObject toJson() const;
+
+    const QString &getPicsFolder() const;
+
+    void setPicsFolder(const QString &mPicsFolder);
+
+    const QString &getTempFolder() const;
+
+    void setTempFolder(const QString &mTempFolder);
+
+    const QStringList &getPics() const;
+
+    void setPics(const QStringList &mPics);
+
+    int getIndex() const;
+
+    void setIndex(int mIndex);
+
+    const QStack<QString> &getDelPics() const;
+
+    void setDelPics(const QStack<QString> &mDelPics);
 
 private:
     QString m_picsFolder = nullptr;

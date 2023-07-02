@@ -9,7 +9,8 @@
 #include <QString>
 #include "../model/appinfo.h"
 
-class PicPickerController {
+class PicPickerController : public QObject{
+Q_OBJECT
 public:
 
     PicPickerController();
@@ -37,9 +38,16 @@ public:
     QString logfile() const;
 
     QString getStoreDataPath();
+
     QString getStoreDataBakPath();
 
     void close();
+
+private:
+
+    void moveToTempFolder(QString imageName);
+
+    void moveToPicsFolder(QString imageName);
 
 private:
     AppInfo *m_appInfo;

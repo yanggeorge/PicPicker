@@ -7,9 +7,11 @@
 #include "picpicker.h"
 #include "ui_PicPicker.h"
 #include "../model/appconstants.h"
+#include "aboutdialog.h"
 #include <QDebug>
 #include <QShowEvent>
 #include <QMessageBox>
+#include <QJsonDocument>
 
 
 PicPicker::PicPicker(PicPickerController *controller, QWidget *parent) :
@@ -20,6 +22,22 @@ PicPicker::PicPicker(PicPickerController *controller, QWidget *parent) :
     ui->centralwidget->setFixedWidth(Fixed_Width);
     ui->imageLabel->setFixedHeight(Fixed_Height);
     ui->imageLabel->setFixedWidth(Fixed_Width);
+
+    //Menu
+    connect(ui->actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
+    connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
+    connect(ui->actionNewProject, SIGNAL(triggered()), this, SLOT(newProject()));
+
+    //toolbar
+    connect(ui->actionDelPic, SIGNAL(triggered()), this, SLOT(del()));
+    connect(ui->actionUndo, SIGNAL(triggered()), this, SLOT(undo()));
+    connect(ui->actionPrevPic, SIGNAL(triggered()), this, SLOT(prev()));
+    connect(ui->actionNextPic, SIGNAL(triggered()), this, SLOT(next()));
+
+    ui->actionDelPic->setShortcut(QKeySequence(Qt::Key_Up));
+    ui->actionUndo->setShortcut(QKeySequence(Qt::Key_Down));
+    ui->actionNextPic->setShortcut(QKeySequence(Qt::Key_Right));
+    ui->actionPrevPic->setShortcut(QKeySequence(Qt::Key_Left));
 }
 
 PicPicker::~PicPicker() {
@@ -32,7 +50,7 @@ void PicPicker::showEvent(QShowEvent *event) {
         qDebug() << "show event";
         int result = m_controller->init();
         if (result == 1) {
-            QMessageBox::warning(nullptr, "Warning", tr("创建文件失败"));
+            QMessageBox::warning(nullptr, "Warning", tr("fail to create file"));
             return;
         }
 
@@ -46,6 +64,61 @@ void PicPicker::showEvent(QShowEvent *event) {
 
 void PicPicker::showImage(const QString &pic) {
     QImage image(m_controller->getPicsFolder() + QDir::separator() + pic);
-    QImage scaled = image.scaled(Fixed_Width,Fixed_Height, Qt::KeepAspectRatio);
+    QImage scaled = image.scaled(Fixed_Width, Fixed_Height, Qt::KeepAspectRatio);
     ui->imageLabel->setPixmap(QPixmap::fromImage(scaled));
+}
+
+void PicPicker::about() {
+    AboutDialog dlg;
+    dlg.exec();
+}
+
+void PicPicker::newProject() {
+    qDebug() << "new project";
+}
+
+void PicPicker::del() {
+    QString delPic = m_controller->delCurrPic();
+    qDebug() << "del Pic[" << delPic << "]";
+
+    QString pic = m_controller->currPic();
+    if (pic == nullptr) {
+        ui->imageLabel->setPixmap(QPixmap());
+        return;
+    }
+    pic = m_controller->prevPic();
+    showImage(pic);
+    ui->statusbar->showMessage(m_controller->debugInfo());
+}
+
+void PicPicker::undo() {
+    QString unDelPic = m_controller->unDelPic();
+    if (unDelPic == nullptr) {
+        return;
+    }
+
+    QString pic = m_controller->currPic();
+    if (pic == nullptr) {
+        return;
+    }
+    showImage(pic);
+    ui->statusbar->showMessage(m_controller->debugInfo());
+}
+
+void PicPicker::prev() {
+    QString pic = m_controller->prevPic();
+    if (pic == nullptr) {
+        return;
+    }
+    showImage(pic);
+    ui->statusbar->showMessage(m_controller->debugInfo());
+}
+
+void PicPicker::next() {
+    QString pic = m_controller->nextPic();
+    if (pic == nullptr) {
+        return;
+    }
+    showImage(pic);
+    ui->statusbar->showMessage(m_controller->debugInfo());
 }

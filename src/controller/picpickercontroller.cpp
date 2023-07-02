@@ -29,11 +29,29 @@ QString PicPickerController::prevPic() {
 
 
 QString PicPickerController::delCurrPic() {
-    m_appInfo->delCurrPic();
+    if (m_appInfo ->currPic() == nullptr) {
+        qInfo() << "there no pics left";
+        return nullptr;
+    }
+
+    QString delPic = m_appInfo->delCurrPic();
+
+    moveToTempFolder(delPic);
+
+    // serialize appInfo to json string
+    QJsonDocument doc(m_appInfo->toJson());
+    qDebug() << doc.toJson(QJsonDocument::Compact);
+
+    return delPic;
 };
 
 QString PicPickerController::unDelPic() {
-    return m_appInfo->unDelPic();
+    QString unDelPic = m_appInfo->unDelPic();
+    if (unDelPic == nullptr) {
+        return nullptr;
+    }
+    moveToPicsFolder(unDelPic);
+    return unDelPic;
 }
 
 QString PicPickerController::getPicsFolder() {
@@ -121,3 +139,26 @@ QString PicPickerController::getStoreDataBakPath() {
     return QDir(homeDir).filePath(APP_LOCATION + QDir::separator() + "data.json.bak");
 }
 
+void PicPickerController::moveToTempFolder(QString imageName) {
+    QString src = m_appInfo->getPicsFolder() + QDir::separator() + imageName;
+    QString target = m_appInfo->getTempFolder() + QDir::separator() + imageName;
+    QFile file(src);
+    if (file.rename(target)) {
+        qDebug() << "File moved successfully";
+    } else {
+        qDebug() << "Failed to move file:" << file.errorString();
+    }
+
+}
+
+void PicPickerController::moveToPicsFolder(QString imageName) {
+    QString src = m_appInfo->getTempFolder() + QDir::separator() + imageName;
+    QString target = m_appInfo->getPicsFolder() + QDir::separator() + imageName;
+    QFile file(src);
+    if (file.rename(target)) {
+        qDebug() << "File moved successfully";
+    } else {
+        qDebug() << "Failed to move file:" << file.errorString();
+    }
+
+}

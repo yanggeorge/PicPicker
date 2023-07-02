@@ -13,6 +13,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class PicPicker; }
 
 class QEvent;
+
 class PicPickerController;
 
 QT_END_NAMESPACE
@@ -26,11 +27,25 @@ public:
 
     ~PicPicker() override;
 
-    void showImage(const QString &pic);
 
 protected:
+    void showImage(const QString &pic);
 
-    void showEvent(QShowEvent* event);
+    void showEvent(QShowEvent *event);
+
+private slots:
+
+    void about();
+
+    void newProject();
+
+    void del();
+
+    void undo();
+
+    void prev();
+
+    void next();
 
 private:
     Ui::PicPicker *ui;

@@ -98,3 +98,43 @@ QJsonObject AppInfo::toJson() const {
     return obj;
 }
 
+const QString &AppInfo::getPicsFolder() const {
+    return m_picsFolder;
+}
+
+void AppInfo::setPicsFolder(const QString &mPicsFolder) {
+    m_picsFolder = mPicsFolder;
+}
+
+const QString &AppInfo::getTempFolder() const {
+    return m_tempFolder;
+}
+
+void AppInfo::setTempFolder(const QString &mTempFolder) {
+    m_tempFolder = mTempFolder;
+}
+
+const QStringList &AppInfo::getPics() const {
+    return m_pics;
+}
+
+void AppInfo::setPics(const QStringList &mPics) {
+    m_pics = mPics;
+}
+
+int AppInfo::getIndex() const {
+    return m_index;
+}
+
+void AppInfo::setIndex(int mIndex) {
+    m_index = mIndex;
+}
+
+const QStack<QString> &AppInfo::getDelPics() const {
+    return m_delPics;
+}
+
+void AppInfo::setDelPics(const QStack<QString> &mDelPics) {
+    m_delPics = mDelPics;
+}
+
