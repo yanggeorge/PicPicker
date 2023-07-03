@@ -58,6 +58,10 @@ QString PicPickerController::getPicsFolder() {
     return m_appInfo->getPicsFolder();
 }
 
+QString PicPickerController::getTempFolder() {
+    return m_appInfo->getTempFolder();
+}
+
 QString PicPickerController::debugInfo() const {
     return m_appInfo->debugInfo();
 }

@@ -13,5 +13,6 @@
         <file>icons/back.png</file>
         <file>icons/forward.png</file>
         <file>icons/icon_128x128.png</file>
+        <file>icons/opened-folder_100.png</file>
     </qresource>
 </RCC>

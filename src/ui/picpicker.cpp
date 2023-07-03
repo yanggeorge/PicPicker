@@ -8,6 +8,7 @@
 #include "ui_PicPicker.h"
 #include "../model/appconstants.h"
 #include "aboutdialog.h"
+#include "opendialog.h"
 #include <QDebug>
 #include <QShowEvent>
 #include <QMessageBox>
@@ -26,13 +27,13 @@ PicPicker::PicPicker(PicPickerController *controller, QWidget *parent) :
     //Menu
     connect(ui->actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
-    connect(ui->actionNewProject, SIGNAL(triggered()), this, SLOT(newProject()));
+    connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openPicsFolder()));
 
     //toolbar
-    connect(ui->actionDelPic, SIGNAL(triggered()), this, SLOT(del()));
+    connect(ui->actionDelPic, SIGNAL(triggered()), this, SLOT(delPic()));
     connect(ui->actionUndo, SIGNAL(triggered()), this, SLOT(undo()));
-    connect(ui->actionPrevPic, SIGNAL(triggered()), this, SLOT(prev()));
-    connect(ui->actionNextPic, SIGNAL(triggered()), this, SLOT(next()));
+    connect(ui->actionPrevPic, SIGNAL(triggered()), this, SLOT(prevPic()));
+    connect(ui->actionNextPic, SIGNAL(triggered()), this, SLOT(nextPic()));
 
     ui->actionDelPic->setShortcut(QKeySequence(Qt::Key_Up));
     ui->actionUndo->setShortcut(QKeySequence(Qt::Key_Down));
@@ -73,11 +74,19 @@ void PicPicker::about() {
     dlg.exec();
 }
 
-void PicPicker::newProject() {
-    qDebug() << "new project";
+void PicPicker::openPicsFolder() {
+    qDebug() << "open Pics Folder";
+    OpenDialogController controller;
+    controller.setPicsFolder(m_controller->getPicsFolder());
+    controller.setTempFolder(m_controller->getTempFolder());
+
+    OpenDialog dlg(&controller);
+    dlg.exec();
+
+    qDebug() << "openPicsFolder closed" ;
 }
 
-void PicPicker::del() {
+void PicPicker::delPic() {
     QString delPic = m_controller->delCurrPic();
     qDebug() << "del Pic[" << delPic << "]";
 
@@ -105,7 +114,7 @@ void PicPicker::undo() {
     ui->statusbar->showMessage(m_controller->debugInfo());
 }
 
-void PicPicker::prev() {
+void PicPicker::prevPic() {
     QString pic = m_controller->prevPic();
     if (pic == nullptr) {
         return;
@@ -114,7 +123,7 @@ void PicPicker::prev() {
     ui->statusbar->showMessage(m_controller->debugInfo());
 }
 
-void PicPicker::next() {
+void PicPicker::nextPic() {
     QString pic = m_controller->nextPic();
     if (pic == nullptr) {
         return;

@@ -37,15 +37,15 @@ private slots:
 
     void about();
 
-    void newProject();
+    void openPicsFolder();
 
-    void del();
+    void delPic();
 
     void undo();
 
-    void prev();
+    void prevPic();
 
-    void next();
+    void nextPic();
 
 private:
     Ui::PicPicker *ui;

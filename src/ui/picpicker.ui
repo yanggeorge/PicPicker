@@ -56,7 +56,7 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionNewProject"/>
+    <addaction name="actionOpen"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -84,9 +84,12 @@
    <addaction name="actionDelPic"/>
    <addaction name="actionUndo"/>
   </widget>
-  <action name="actionNewProject">
+  <action name="actionOpen">
    <property name="text">
-    <string>New Project</string>
+    <string>Open Folder</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Image Folder</string>
    </property>
   </action>
   <action name="actionAbout">

@@ -33,6 +33,8 @@ public:
 
     QString getPicsFolder();
 
+    QString getTempFolder();
+
     QString debugInfo() const;
 
     QString logfile() const;

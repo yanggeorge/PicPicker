@@ -30,7 +30,7 @@ set(SOURCES
         src/model/appconstants.cpp
         src/model/appinfo.cpp
         src/model/appinfo.h
-        )
+        src/ui/opendialog.cpp src/ui/opendialog.h src/ui/opendialog.ui src/controller/opendialogcontroller.cpp src/controller/opendialogcontroller.h)
 
 set(l10n_files
         )
