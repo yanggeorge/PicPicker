@@ -6,7 +6,7 @@
 #define PICPICKER_OPENDIALOG_H
 
 #include <QDialog>
-#include "../controller/opendialogcontroller.h"
+#include "src/controller/opendialogcontroller.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -24,6 +24,9 @@ public:
     void accept() override;
 
     void reject() override;
+
+private slots:
+    void picsFolderSelection();
 
 private:
     Ui::OpenDialog *ui;

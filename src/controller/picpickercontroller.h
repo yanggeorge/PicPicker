@@ -7,7 +7,7 @@
 
 
 #include <QString>
-#include "../model/appinfo.h"
+#include "src/model/appinfo.h"
 
 class PicPickerController : public QObject{
 Q_OBJECT

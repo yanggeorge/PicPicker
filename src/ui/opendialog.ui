@@ -54,9 +54,9 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="picsFolderIcon">
+     <widget class="ClickableLabel" name="picsFolderIcon">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="styleSheet">
        <string notr="true">image: url(:/icons/opened-folder_100.png);
@@ -110,6 +110,13 @@ image-position: left center;</string>
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ClickableLabel</class>
+   <extends>QLabel</extends>
+   <header>src/model/clickablelabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../application.qrc"/>
  </resources>

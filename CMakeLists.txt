@@ -20,17 +20,17 @@ set(SOURCES
         src/mainwindow.cpp
         src/model/appmodel.cpp
         src/ui/aboutdialog.cpp
-        src/ui/aboutdialog.h
         src/ui/aboutdialog.ui
         src/ui/picpicker.cpp
-        src/ui/picpicker.h
         src/ui/picpicker.ui
         src/controller/picpickercontroller.cpp
-        src/controller/picpickercontroller.h
         src/model/appconstants.cpp
         src/model/appinfo.cpp
-        src/model/appinfo.h
-        src/ui/opendialog.cpp src/ui/opendialog.h src/ui/opendialog.ui src/controller/opendialogcontroller.cpp src/controller/opendialogcontroller.h)
+        src/model/clickablelabel.cpp
+        src/ui/opendialog.cpp
+        src/ui/opendialog.ui
+        src/controller/opendialogcontroller.cpp
+        )
 
 set(l10n_files
         )
@@ -38,7 +38,7 @@ set(l10n_files
 QT5_ADD_RESOURCES(MyResources application.qrc)
 
 set(MACOSX_BUNDLE_ICON_FILE AppIcon.icns)
-set(app_icon_macos "${CMAKE_SOURCE_DIR}/AppIcon.icns")
+set(app_icon_macos "${CMAKE_SOURCE_DIR}/AppIcon.icns" src/model/clickablelabel.cpp src/model/clickablelabel.h)
 set_source_files_properties(${app_icon_macos} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 set_source_files_properties(${l10n_files} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources/l10n")
 

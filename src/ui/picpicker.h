@@ -31,7 +31,7 @@ public:
 protected:
     void showImage(const QString &pic);
 
-    void showEvent(QShowEvent *event);
+    void showEvent(QShowEvent *event) override;
 
 private slots:
 

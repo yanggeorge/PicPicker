@@ -16,6 +16,7 @@ OpenDialog::OpenDialog(OpenDialogController *controller, QWidget *parent) :
     ui->picsFolderLineEdit->insert(m_controller->getPicsFolder());
     ui->tempFolderLineEdit->insert(m_controller->getTempFolder());
 
+    connect(ui->picsFolderIcon, SIGNAL(clicked()), this, SLOT(picsFolderSelection()));
 }
 
 OpenDialog::~OpenDialog() {
@@ -30,4 +31,9 @@ void OpenDialog::accept() {
 void OpenDialog::reject() {
     QDialog::reject();
     qDebug() << "rejected";
+}
+
+void OpenDialog::picsFolderSelection() {
+    qDebug() << "picsFolderSelection";
+
 }
