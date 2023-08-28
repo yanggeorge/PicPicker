@@ -39,6 +39,7 @@ PicPicker::PicPicker(PicPickerController *controller, QWidget *parent) :
     ui->actionUndo->setShortcut(QKeySequence(Qt::Key_Down));
     ui->actionNextPic->setShortcut(QKeySequence(Qt::Key_Right));
     ui->actionPrevPic->setShortcut(QKeySequence(Qt::Key_Left));
+    ui->actionOpen->setShortcut(QKeySequence::Open);
 }
 
 PicPicker::~PicPicker() {
@@ -82,8 +83,17 @@ void PicPicker::openPicsFolder() {
 
     OpenDialog dlg(&controller);
     dlg.exec();
-
     qDebug() << "openPicsFolder closed" ;
+    if(m_controller->getPicsFolder() != controller.getPicsFolder()){
+        qDebug() << "pics Folder changed!" ;
+        m_controller->init(controller.getPicsFolder());
+        auto pic = m_controller->currPic();
+        if(pic == nullptr) {
+            return;
+        }
+        showImage(pic);
+        ui->statusbar->showMessage(m_controller->debugInfo());
+    }
 }
 
 void PicPicker::delPic() {
@@ -130,4 +140,9 @@ void PicPicker::nextPic() {
     }
     showImage(pic);
     ui->statusbar->showMessage(m_controller->debugInfo());
+}
+
+void PicPicker::closeEvent(QCloseEvent *event) {
+    qDebug() << "Closing the application...";
+    m_controller->close();
 }

@@ -7,6 +7,7 @@
 #include "opendialog.h"
 #include "ui_OpenDialog.h"
 #include <QDebug>
+#include <QFileDialog>
 
 
 OpenDialog::OpenDialog(OpenDialogController *controller, QWidget *parent) :
@@ -26,6 +27,8 @@ OpenDialog::~OpenDialog() {
 void OpenDialog::accept() {
     QDialog::accept();
     qDebug() << "accepted";
+    this->m_controller->setPicsFolder(this->ui->picsFolderLineEdit->text());
+    qDebug() << "set pics folder[" << this->m_controller->getPicsFolder() << "]" ;
 }
 
 void OpenDialog::reject() {
@@ -35,5 +38,7 @@ void OpenDialog::reject() {
 
 void OpenDialog::picsFolderSelection() {
     qDebug() << "picsFolderSelection";
-
+    auto old = this->ui->picsFolderLineEdit->text();
+    QString directory = QFileDialog::getExistingDirectory(this, tr("select a folder"), old);
+    this->ui->picsFolderLineEdit->setText(directory);
 }

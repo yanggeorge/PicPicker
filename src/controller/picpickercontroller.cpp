@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QJsonArray>
 #include <QJsonParseError>
+#include <QMessageBox>
 
 
 int PicPickerController::getIndex() const {
@@ -74,6 +75,23 @@ QString PicPickerController::logfile() const {
 
 void PicPickerController::close() {
     qDebug() << "normal close.";
+    // store state
+    QJsonDocument doc(m_appInfo->toJson());
+    QFile old(getStoreDataPath());
+    if (old.exists()) {
+        old.rename(getStoreDataBakPath());
+        qDebug() << "data.json exists and rename to data.json.bak";
+    }
+
+    QFile dataJsonFile(getStoreDataPath());
+    if (!dataJsonFile.open(QIODevice::WriteOnly)) {
+        qDebug() << "Failed to open old";
+        return;
+    }
+
+    dataJsonFile.write(doc.toJson());
+    dataJsonFile.close();
+    qDebug() << "File saved";
 }
 
 PicPickerController::PicPickerController() :
@@ -130,6 +148,23 @@ int PicPickerController::init() {
     }
 
     m_appInfo->fromJson(doc.object());
+    return 0;
+}
+
+
+int PicPickerController::init(QString picsFolder, QString tempFolder) {
+    m_appInfo = new AppInfo;
+    m_appInfo->setPicsFolder(picsFolder);
+
+    const QStringList &files = QDir(m_appInfo->getPicsFolder()).entryList(QDir::Filter::Files,
+                                                                         QDir::SortFlag::Name |
+                                                                         QDir::SortFlag::Time);
+    QRegularExpression re("(?i)\\.(png|jpg)$", QRegularExpression::CaseInsensitiveOption);
+    const QStringList &pics = files.filter(re);
+
+    qInfo() << QString("there are %1 pics.").arg(pics.length());
+
+    m_appInfo->setPics(pics);
     return 0;
 }
 

@@ -17,6 +17,8 @@ public:
 
     int init();
 
+    int init(QString picsFolder, QString tempFolder = nullptr);
+
     QStringList getPics();
 
     int getIndex() const;
