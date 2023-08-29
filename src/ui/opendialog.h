@@ -28,6 +28,8 @@ public:
 private slots:
     void picsFolderSelection();
 
+    void tempFolderSelection();
+
 private:
     Ui::OpenDialog *ui;
 

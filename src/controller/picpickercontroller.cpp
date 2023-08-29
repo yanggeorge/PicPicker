@@ -30,7 +30,7 @@ QString PicPickerController::prevPic() {
 
 
 QString PicPickerController::delCurrPic() {
-    if (m_appInfo ->currPic() == nullptr) {
+    if (m_appInfo->currPic() == nullptr) {
         qInfo() << "there no pics left";
         return nullptr;
     }
@@ -104,26 +104,8 @@ int PicPickerController::init() {
     m_appInfo->setIndex(0);
     m_appInfo->setPicsFolder(QDir::homePath());
     if (m_appInfo->getTempFolder() == nullptr) {
-        QString homeDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-        qInfo() << "homeDir = " << homeDir;
-        QString tmpPath = QDir(homeDir).filePath(DEFAULT_TEMP_DIR);
-        qInfo() << "tmpPath = " << tmpPath;
-        QDir tmpDir(tmpPath);
-        if (!tmpDir.exists()) {
-            if (tmpDir.mkpath(tmpPath)) {
-                // Directory created successfully
-                qInfo() << "tmpPath = " << tmpPath;
-            } else {
-                // Error creating directory
-                return 1;
-            }
-        } else {
-            //TODO Directory already exists
-        }
-        m_appInfo->setTempFolder(tmpPath);
+        m_appInfo->setTempFolder(getFullTempFolderPath());
     }
-    qInfo() << "picsFolder = " << m_appInfo->getPicsFolder();
-    qInfo() << "tempFolder = " << m_appInfo->getTempFolder();
     // secondly, init from data.json
     QString dataJsonPath = this->getStoreDataPath();
 
@@ -155,10 +137,15 @@ int PicPickerController::init() {
 int PicPickerController::init(QString picsFolder, QString tempFolder) {
     m_appInfo = new AppInfo;
     m_appInfo->setPicsFolder(picsFolder);
+    if (tempFolder == nullptr) {
+        m_appInfo->setTempFolder(getFullTempFolderPath());
+    }else{
+        m_appInfo->setTempFolder(tempFolder);
+    }
 
     const QStringList &files = QDir(m_appInfo->getPicsFolder()).entryList(QDir::Filter::Files,
-                                                                         QDir::SortFlag::Name |
-                                                                         QDir::SortFlag::Time);
+                                                                          QDir::SortFlag::Name |
+                                                                          QDir::SortFlag::Time);
     QRegularExpression re("(?i)\\.(png|jpg)$", QRegularExpression::CaseInsensitiveOption);
     const QStringList &pics = files.filter(re);
 
@@ -200,4 +187,26 @@ void PicPickerController::moveToPicsFolder(QString imageName) {
         qDebug() << "Failed to move file:" << file.errorString();
     }
 
+}
+
+QString PicPickerController::getFullTempFolderPath() {
+    QString homeDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    QString tmpPath = QDir(homeDir).filePath(DEFAULT_TEMP_DIR);
+    QDir tmpDir(tmpPath);
+    if (!tmpDir.exists()) {
+        if (tmpDir.mkpath(tmpPath)) {
+            // Directory created successfully
+            qInfo() << "tmpPath = " << tmpPath;
+        } else {
+            // Error creating directory
+            emit error(tr("error creating directory"));
+        }
+    } else {
+        //TODO Directory already exists
+    }
+    return tmpPath;
+}
+
+void PicPickerController::setTempFolderPath(const QString& path) {
+    m_appInfo->setTempFolder(path);
 }

@@ -47,6 +47,13 @@ public:
 
     void close();
 
+    QString getFullTempFolderPath();
+
+    void setTempFolderPath(const QString& path);
+
+signals:
+    void error(QString msg);
+
 private:
 
     void moveToTempFolder(QString imageName);

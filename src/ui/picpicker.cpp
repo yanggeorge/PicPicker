@@ -27,7 +27,7 @@ PicPicker::PicPicker(PicPickerController *controller, QWidget *parent) :
     //Menu
     connect(ui->actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
-    connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openPicsFolder()));
+    connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openNewFolder()));
 
     //toolbar
     connect(ui->actionDelPic, SIGNAL(triggered()), this, SLOT(delPic()));
@@ -75,7 +75,7 @@ void PicPicker::about() {
     dlg.exec();
 }
 
-void PicPicker::openPicsFolder() {
+void PicPicker::openNewFolder() {
     qDebug() << "open Pics Folder";
     OpenDialogController controller;
     controller.setPicsFolder(m_controller->getPicsFolder());
@@ -83,16 +83,20 @@ void PicPicker::openPicsFolder() {
 
     OpenDialog dlg(&controller);
     dlg.exec();
-    qDebug() << "openPicsFolder closed" ;
+    qDebug() << "openNewFolder closed" ;
     if(m_controller->getPicsFolder() != controller.getPicsFolder()){
         qDebug() << "pics Folder changed!" ;
-        m_controller->init(controller.getPicsFolder());
+        m_controller->init(controller.getPicsFolder(), controller.getTempFolder());
         auto pic = m_controller->currPic();
         if(pic == nullptr) {
             return;
         }
         showImage(pic);
         ui->statusbar->showMessage(m_controller->debugInfo());
+    }
+
+    if (m_controller->getTempFolder() != controller.getTempFolder()) {
+        m_controller->setTempFolderPath(controller.getTempFolder());
     }
 }
 

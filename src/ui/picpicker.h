@@ -39,7 +39,7 @@ private slots:
 
     void about();
 
-    void openPicsFolder();
+    void openNewFolder();
 
     void delPic();
 
