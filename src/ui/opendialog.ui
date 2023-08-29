@@ -58,6 +58,12 @@
       <property name="enabled">
        <bool>true</bool>
       </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
       <property name="styleSheet">
        <string notr="true">image: url(:/icons/opened-folder_100.png);
 image-position: left center;</string>
@@ -97,7 +103,13 @@ image-position: left center;</string>
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="tempFolderIcon">
+     <widget class="ClickableLabel" name="tempFolderIcon">
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
       <property name="styleSheet">
        <string notr="true">image: url(:/icons/opened-folder_100.png);
 image-position: left center;</string>
